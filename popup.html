@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>busyDev | Qoutex Mega</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            width: 340px;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            font-size: 13px;
+            line-height: 1.45;
+            color: #e8eaed;
+            background: #0c0f14;
+            -webkit-font-smoothing: antialiased;
+        }
+        .shell {
+            padding: 18px 18px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            margin: 10px;
+            background: linear-gradient(165deg, #12161d 0%, #0c0f14 100%);
+        }
+        .brand {
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .brand-busy {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+        .brand-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #f3f4f6;
+            margin: 0;
+        }
+        .brand-title span {
+            color: #94a3b8;
+            font-weight: 500;
+        }
+        .tagline {
+            margin-top: 8px;
+            font-size: 11px;
+            color: #64748b;
+            line-height: 1.4;
+        }
+        label {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #64748b;
+            margin-bottom: 6px;
+        }
+        .field {
+            position: relative;
+        }
+        .field .currency {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #34d399;
+            font-size: 14px;
+            font-weight: 600;
+            pointer-events: none;
+        }
+        input {
+            width: 100%;
+            padding: 11px 12px 11px 28px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.35);
+            color: #f3f4f6;
+            font-size: 15px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        input::placeholder {
+            color: #475569;
+        }
+        input:focus {
+            border-color: rgba(52, 211, 153, 0.45);
+            box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.12);
+        }
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            cursor: pointer;
+            border: none;
+            transition: background 0.15s ease, transform 0.1s ease;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        #applyBtn {
+            background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+            color: #022c22;
+        }
+        #applyBtn:hover {
+            filter: brightness(1.06);
+        }
+        #deactivateBtn {
+            background: transparent;
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.35);
+        }
+        #deactivateBtn:hover {
+            background: rgba(248, 113, 113, 0.08);
+            border-color: rgba(248, 113, 113, 0.55);
+        }
+        .status-wrap {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        #status {
+            font-size: 11px;
+            text-align: center;
+            color: #64748b;
+            min-height: 16px;
+        }
+        #status.success {
+            color: #34d399;
+            font-weight: 600;
+        }
+        details.tx-panel {
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        details.tx-panel summary {
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            list-style: none;
+        }
+        details.tx-panel summary::-webkit-details-marker {
+            display: none;
+        }
+        details.tx-panel[open] summary {
+            color: #cbd5e1;
+            margin-bottom: 10px;
+        }
+        .tx-hint {
+            font-size: 10px;
+            color: #64748b;
+            margin-bottom: 10px;
+            line-height: 1.35;
+        }
+        .tx-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tx-grid label {
+            margin-bottom: 4px;
+        }
+        .tx-grid input,
+        .tx-grid select {
+            padding: 8px 10px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .tx-grid .field input {
+            padding-left: 10px;
+        }
+        .tx-grid .field .currency {
+            display: none;
+        }
+        #addTxBtn {
+            background: rgba(52, 211, 153, 0.15);
+            color: #6ee7b7;
+            border: 1px solid rgba(52, 211, 153, 0.35);
+        }
+        #addTxBtn:hover {
+            background: rgba(52, 211, 153, 0.22);
+        }
+        #txList {
+            max-height: 140px;
+            overflow-y: auto;
+            margin-top: 10px;
+            padding: 6px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .tx-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 11px;
+            color: #cbd5e1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .tx-item span {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .tx-item button {
+            flex-shrink: 0;
+            width: auto;
+            padding: 4px 8px;
+            font-size: 10px;
+            background: rgba(248, 113, 113, 0.12);
+            color: #fca5a5;
+            border: 1px solid rgba(248, 113, 113, 0.35);
+        }
+        .tx-item button:hover {
+            background: rgba(248, 113, 113, 0.2);
+        }
+        .tx-empty {
+            font-size: 11px;
+            color: #64748b;
+            padding: 6px 0;
+        }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.25);
+            color: #cbd5e1;
+            font-size: 11px;
+            margin-top: 10px;
+        }
+        .pill strong {
+            font-weight: 700;
+            color: #e5e7eb;
+        }
+        #verifyLicenseBtn {
+            background: rgba(34, 211, 238, 0.14);
+            color: #67e8f9;
+            border: 1px solid rgba(34, 211, 238, 0.35);
+        }
+        #verifyLicenseBtn:hover {
+            background: rgba(34, 211, 238, 0.2);
+        }
+        #licenseKey {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            padding: 10px 12px;
+        }
+        #saveAnalyticsBtn {
+            background: rgba(56, 189, 248, 0.15);
+            color: #7dd3fc;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+        }
+        #saveAnalyticsBtn:hover {
+            background: rgba(56, 189, 248, 0.22);
+        }
+        #saveLeaderboardBtn {
+            background: rgba(251, 191, 36, 0.12);
+            color: #fcd34d;
+            border: 1px solid rgba(251, 191, 36, 0.4);
+        }
+        #saveLeaderboardBtn:hover {
+            background: rgba(251, 191, 36, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header class="brand">
+            <div class="brand-busy">busyDev</div>
+            <h1 class="brand-title">Qoutex Mega</h1>
+            <p class="tagline">Live UI &middot; Demo execution &middot; No flash modals</p>
+        </header>
+
+        <div class="form-group">
+            <label for="balance">Display balance</label>
+            <div class="field">
+                <span class="currency" aria-hidden="true">$</span>
+                <input type="number" id="balance" placeholder="10000" step="1" min="0">
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 12px;">
+            <label for="licenseKey">License key</label>
+            <input type="text" id="licenseKey" placeholder="Enter license key" autocomplete="off" spellcheck="false">
+            <div class="actions" style="margin-top: 10px;">
+                <button type="button" id="verifyLicenseBtn">Verify license</button>
+            </div>
+            <div class="pill" id="licensePill" style="display:none;">
+                <strong id="licensePillState">License</strong>
+                <span id="licensePillText"></span>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button type="button" id="applyBtn">Apply &amp; activate</button>
+            <button type="button" id="deactivateBtn">Deactivate</button>
+        </div>
+
+        <div class="status-wrap">
+            <div id="status">Ready</div>
+        </div>
+
+        <details class="tx-panel" id="txPanel">
+            <summary>Manage transactions</summary>
+            <p class="tx-hint">Shown on <strong>Transactions</strong> (<code>/balance</code>) and <strong>Withdrawal</strong> “latest requests” while active. Cosmetic only.</p>
+            <div class="tx-grid">
+                <div>
+                    <label for="txId">Transaction ID</label>
+                    <input type="text" id="txId" placeholder="Auto if empty" inputmode="numeric" autocomplete="off">
+                </div>
+                <div>
+                    <label for="txDate">Date &amp; time</label>
+                    <input type="datetime-local" id="txDate" step="1">
+                </div>
+                <div>
+                    <label for="txStatus">Status</label>
+                    <select id="txStatus">
+                        <option value="success">Successed</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="txType">Type</label>
+                    <select id="txType">
+                        <option value="Deposit">Deposit</option>
+                        <option value="Withdrawal">Withdrawal</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="txPayment">Payment system</label>
+                    <input type="text" id="txPayment" placeholder="e.g. UPI" autocomplete="off">
+                </div>
+                <div>
+                    <label for="txAmount">Amount</label>
+                    <input type="number" id="txAmount" placeholder="100" step="0.01" min="0">
+                </div>
+            </div>
+            <div class="actions" style="margin-top: 10px;">
+                <button type="button" id="addTxBtn">Add transaction</button>
+            </div>
+            <div id="txList"></div>
+        </details>
+
+        <details class="tx-panel" id="analyticsPanel">
+            <summary>Manage analytics</summary>
+            <p class="tx-hint">
+                <strong>/analytics</strong> — “In the account” matches your display balance. General data below overrides the statistics (cosmetic).
+            </p>
+            <div class="tx-grid">
+                <div>
+                    <label for="anTradesCountPct">Trades count (ring %)</label>
+                    <input type="number" id="anTradesCountPct" min="0" max="100" step="1" placeholder="0–100">
+                </div>
+                <div>
+                    <label for="anTradesProfit">Trades profit</label>
+                    <input type="text" id="anTradesProfit" placeholder="e.g. 1 234 $">
+                </div>
+                <div>
+                    <label for="anProfitablePct">Profitable trades (ring %)</label>
+                    <input type="number" id="anProfitablePct" min="0" max="100" step="1" placeholder="0–100">
+                </div>
+                <div>
+                    <label for="anAvgProfit">Average profit</label>
+                    <input type="text" id="anAvgProfit" placeholder="e.g. 50 $">
+                </div>
+                <div>
+                    <label for="anNetTurnover">Net turnover</label>
+                    <input type="text" id="anNetTurnover" placeholder="e.g. 10 000 $">
+                </div>
+                <div>
+                    <label for="anHedged">Hedged trades</label>
+                    <input type="text" id="anHedged" placeholder="e.g. 0 $">
+                </div>
+                <div>
+                    <label for="anMinTrade">Min trade amount</label>
+                    <input type="text" id="anMinTrade" placeholder="e.g. 1 $">
+                </div>
+                <div>
+                    <label for="anMaxTrade">Max trade amount</label>
+                    <input type="text" id="anMaxTrade" placeholder="e.g. 1 000 $">
+                </div>
+                <div>
+                    <label for="anMaxProfit">Max trade profit</label>
+                    <input type="text" id="anMaxProfit" placeholder="e.g. 500 $">
+                </div>
+            </div>
+            <div class="actions" style="margin-top: 10px;">
+                <button type="button" id="saveAnalyticsBtn">Save analytics</button>
+            </div>
+        </details>
+
+        <details class="tx-panel" id="leaderboardPanel">
+            <summary>Manage leader board</summary>
+            <p class="tx-hint">
+                Overrides the summary row and the <strong>name + amount</strong> on the list row at your rank. Cosmetic only.
+            </p>
+            <div class="tx-grid">
+                <div>
+                    <label for="lbName">Display name</label>
+                    <input type="text" id="lbName" placeholder="e.g. Pro Trader" autocomplete="off">
+                </div>
+                <div>
+                    <label for="lbRank">Rank (1–20)</label>
+                    <input type="number" id="lbRank" min="1" max="99" step="1" placeholder="e.g. 5">
+                </div>
+                <div>
+                    <label for="lbAmount">Amount</label>
+                    <input type="text" id="lbAmount" placeholder="e.g. 15000 or $15,000.00">
+                </div>
+                <div>
+                    <label for="lbPosition">Your position (text)</label>
+                    <input type="text" id="lbPosition" placeholder="e.g. 5 or 5th">
+                </div>
+                <div>
+                    <label for="lbBarWidth">Progress bar % (optional)</label>
+                    <input type="number" id="lbBarWidth" min="0" max="100" step="1" placeholder="Leave empty = from rank">
+                </div>
+            </div>
+            <div class="actions" style="margin-top: 10px;">
+                <button type="button" id="saveLeaderboardBtn">Save leader board</button>
+            </div>
+        </details>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
